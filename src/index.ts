@@ -1,27 +1,9 @@
 import { ApolloServer, gql } from "apollo-server";
 import { schema } from "./schemas/schema";
 
-// // import mocks from "./schemas/mocks";
+import { mocks } from "./schemas/mocks";
 
-const typeDefs = gql`
-  type Query {
-    getUser(id: Int): User
-  }
-
-  type User {
-    id: Int
-    name: String
-    mail: String
-    password: String
-    accounts: [Account]
-  }
-
-  type Account {
-    number: String
-    sortcode: String
-    balance: Float
-  }
-`;
+const typeDefs = schema;
 
 const User = {
   id: 12,
@@ -44,7 +26,6 @@ const Users = [
 ];
 
 function whichUser(id) {
-  console.log(id);
   let test = { name: "todd" };
   Users.forEach(element => {
     if (element.id == id) {
@@ -59,13 +40,16 @@ const resolvers = {
   Query: {
     getUser(obj, args) {
       return whichUser(args.id);
+    },
+    getUsers(obj, args) {
+      return Users;
     }
   }
 };
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, mocks, resolvers });
 
 // The `listen` method launches a web server.
 server.listen().then(({ url }) => {

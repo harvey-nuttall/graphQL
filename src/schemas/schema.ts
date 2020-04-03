@@ -1,4 +1,4 @@
-import { gql } from "apollo-server";
+import { ApolloServer, gql } from "apollo-server";
 
 const schema = gql`
   # type Query {
@@ -6,6 +6,7 @@ const schema = gql`
   # }
 
   type Query {
+    getUsers: [User]
     getUser(id: Int): User
   }
 
